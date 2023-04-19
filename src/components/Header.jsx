@@ -13,9 +13,8 @@ export default function Header() {
       }
     // init the usenavigate by putting it in a variable
     const navigate = useNavigate()
-
   return (
-    <div className='bg-white border-b shadow-md sticky top-0 z-50 py-4'>
+    <div className='bg-white border-b shadow-xl sticky top-0 z-50 py-4'>
         <header className='flex justify-between items-center px-3 max-w-6xl mx-auto'>
             <div>
                 <img src="https://static.rdc.moveaws.com/images/logos/rdc-logo-default.svg" alt="Logo" className='h-6 cursor-pointer' onClick={()=> navigate("/")} />
@@ -23,26 +22,19 @@ export default function Header() {
             <div>
                 <ul className='flex space-x-10'>
                     <li 
-                    className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                    pathMatchRoute("/") && "text-black border-b-red-500 text-lg"
-                    }`}
-                    onClick={() => navigate("/")}
-                    >
-                    Home
+                    className={`py-3 text-gray-500 font-semibold text-sm border-b-[3px] border-b-transparent cursor-pointer ${pathMatchRoute("/") && "text-gray-800 border-b-red-700 text-xl"}`} 
+                    onClick={()=> navigate("/")}
+                    >Home
                     </li>
-                    <li
-                    className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                    pathMatchRoute("/offers") && "text-black border-b-red-500 text-lg"
-                    }`}
-                    onClick={() => navigate("/offers")}
+                    <li 
+                    className={`py-3 text-gray-500 font-semibold text-sm border-b-[3px] border-b-transparent cursor-pointer ${pathMatchRoute("/offers") && "text-gray-800  border-b-red-700 text-xl"}`} 
+                    onClick={()=> navigate("/offers")}
                     >
                     Offers
                     </li>
                     <l 
-                    className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                    pathMatchRoute("/sign-in") && "text-black border-b-red-500 text-lg"
-                    }`}
-                    onClick={() => navigate("/sign-in")}
+                    className={`py-3 text-gray-500 font-semibold text-sm border-b-[3px] border-b-transparent cursor-pointer ${pathMatchRoute("/sign-in") && "text-gray-800 border-b-red-700 text-xl"}`} 
+                    onClick={()=> navigate("/sign-in")}
                     >
                     Sign in</l>
                 </ul>
