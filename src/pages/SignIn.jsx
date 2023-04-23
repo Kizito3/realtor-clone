@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { RxEyeClosed, RxEyeOpen } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import {toast} from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
   // creating hook to show password once clicked
@@ -12,6 +15,7 @@ export default function SignIn() {
     password: "",
   });
   const {email, password} = formData;
+  const navigate = useNavigate();
 
   // creating the onchange function
   // function will get event as we are typing on the input fields
@@ -20,6 +24,23 @@ export default function SignIn() {
       ...prevState,
       [e.target.id]: e.target.value,
     }))
+  }
+
+  // onsubmit function for signing in with email and password
+  async function onSubmit(e) {
+    // preventing the refresh of the page
+    e.preventDefault();
+    try {
+      // get the auth
+      const auth = getAuth();
+      // get the user credentials
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        navigate("/")
+      }
+    } catch (error) {
+      toast.error("invalid user credentials")
+    }
   }
   return (
     <section>
@@ -38,7 +59,7 @@ export default function SignIn() {
         />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form>
+          <form onSubmit={onSubmit}>
             <input 
             className='mb-6 rounded w-full px-4 py-2 text-xl text-gray-700 bg-white transition ease-in-out border-none outline-none'
             id='email' 

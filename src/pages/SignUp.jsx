@@ -29,6 +29,7 @@ export default function SignUp() {
     }))
   }
   async function onSubmit(e){
+     // preventing the refresh of the page
     e.preventDefault();
 // initializing firebase auth (firebase authentification)
     try {
