@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import {toast} from "react-toastify";
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 export default function Forgot() {
  
@@ -11,6 +13,16 @@ export default function Forgot() {
   // function will get event as we are typing on the input fields and helping in retrieving the password
   function onChange(e){
       setEmail (e.target.value);
+  }
+  async function onSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+     await sendPasswordResetEmail(auth, email);
+     toast.success("email sent successfully");
+    } catch (error) {
+      toast.error("Email does not exist")
+    }
   }
   return (
     <section>
@@ -29,7 +41,7 @@ export default function Forgot() {
         />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form>
+          <form onSubmit={onSubmit}>
             <input 
             className='mb-6 rounded w-full px-4 py-2 text-xl text-gray-700 bg-white transition ease-in-out border-none outline-none'
             id='email' 
