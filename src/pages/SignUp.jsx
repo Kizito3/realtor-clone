@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 import { RxEyeClosed, RxEyeOpen } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import {getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {db} from "../firebase";
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+import {toast} from "react-toastify";
 
 export default function SignUp() {
   // creating hook to show password once clicked
@@ -13,6 +18,7 @@ export default function SignUp() {
     password: "",
   });
   const { name, email, password} = formData;
+  const navigate = useNavigate();
 
   // creating the onchange function
   // function will get event as we are typing on the input fields
@@ -21,6 +27,49 @@ export default function SignUp() {
       ...prevState,
       [e.target.id]: e.target.value,
     }))
+  }
+  async function onSubmit(e){
+    e.preventDefault();
+// initializing firebase auth (firebase authentification)
+    try {
+      // create a variable called auth
+      const auth = getAuth()
+      // create a variable called usercredential
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // to update the displayname of the currentuser in firebase
+      updateProfile(auth.currentUser,{
+        displayName : name
+      });
+      // getting the user
+      // const user = userCredential.user;
+      // const formDataCopy = { ...formData };
+      // delete formDataCopy.password;
+      // formDataCopy.timestamp = serverTimestamp();
+
+      // await setDoc(doc(db, "users", user.uid), formDataCopy);
+      const user = userCredential.user;
+      // creating a variable that will get the data coming from the formdata we created already
+      const formDataCopy = {...formData}
+      // this will delete the password gotten from the formdata in order not to have it in the formdatacopy
+      delete formDataCopy.password
+      // this gets the exact time the user created an account or got authenticated gotten from firebase as well
+      formDataCopy.timestamp = serverTimestamp();
+      
+      // saving the data into the database
+      // the doc is getting three things ie the db, "users" and user.uid
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+      // toast.success("Sign Up was Successful!!")
+      navigate("/");
+
+    } catch (error) {
+      if (!email) {
+        toast.error("Email input cannot be empty");
+      }
+      if (!name || !email || !password) {
+        toast.error("Fill up all fields to sign up please!")
+      }
+      // toast.error("Something went wrong!");
+    }
   }
   return (
     <section>
@@ -39,8 +88,7 @@ export default function SignUp() {
         />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form>
-
+        <form onSubmit={onSubmit}>
           <input 
             className='mb-6 rounded w-full px-4 py-2 text-xl text-gray-700 bg-white transition ease-in-out border-none outline-none'
             id='name' 
