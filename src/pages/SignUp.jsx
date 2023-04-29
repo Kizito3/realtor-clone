@@ -41,13 +41,7 @@ export default function SignUp() {
       updateProfile(auth.currentUser,{
         displayName : name
       });
-      // getting the user
-      // const user = userCredential.user;
-      // const formDataCopy = { ...formData };
-      // delete formDataCopy.password;
-      // formDataCopy.timestamp = serverTimestamp();
-
-      // await setDoc(doc(db, "users", user.uid), formDataCopy);
+          
       const user = userCredential.user;
       // creating a variable that will get the data coming from the formdata we created already
       const formDataCopy = {...formData}
@@ -63,9 +57,9 @@ export default function SignUp() {
       navigate("/");
 
     } catch (error) {
-      if (!email) {
-        toast.error("Email input cannot be empty");
-      }
+      // if (!email) {
+      //   toast.error("Email input cannot be empty");
+      // }
       if (!name || !email || !password) {
         toast.error("Fill up all fields to sign up please!")
       }

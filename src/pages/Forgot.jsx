@@ -10,7 +10,7 @@ export default function Forgot() {
   const [email, setEmail] = useState("");
 
   // creating the onchange function
-  // function will get event as we are typing on the input fields and helping in retrieving the password
+  // function will get event as we are typing on the input fields and help in retrieving the password
   function onChange(e){
       setEmail (e.target.value);
   }
